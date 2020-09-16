@@ -132,7 +132,6 @@ class RuntimeEngine:
         return
 
     def exec_print_result(self,variant):
-        print
         result = exec(variant)
         print("From Runtime Engine "+str(result))
 
