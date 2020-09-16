@@ -243,12 +243,15 @@ def Send(param0, param1, param2, param3, param4):
 
 
 def weather_info(city):
+    print(city)
     function_name = inspect.stack()[0][3]
+    print(function_name)
     form = """<h1>""" + function_name + """</h1>
     <button class="btn btn-primary" onclick='""" + function_name + """()'>Run</button>
     <button class="btn btn-info" onclick='continuous""" + function_name + """()'>Run Continuously</button>
     <button class="btn btn-danger" onclick='stop""" + function_name + """()'>Stop</button>
     <form enctype="multipart/form-data" action="" method="post">{% csrf_token %}"""
+    print(form)
     form += """<input class="form-control" type="text" name="param0" id="param0""" + function_name + """" value='""" + city + """'/>"""
     form += """
      </form>"""

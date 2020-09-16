@@ -17,7 +17,7 @@ def get_context():
     cm = am.ContextManager()
     #request_variant()
     while True:
-        time.sleep(2)
+        time.sleep(10)
         context_values.append(cm.watch_context())
         AdaptationEngine.get_selected_variant(AdaptationEngine)
         print("IN AE As CM ::::: "+str(cm.watch_context()))
@@ -39,6 +39,11 @@ class AdaptationEngine:
     app_id = ""
     code = ""
     mapping_dict = {}
+    # mapping_dict = {
+        # Current_context: "Sunny/Rainy" ,
+        # Required_value : "Rainy for Robindro Song"
+        # 
+        # }
 
     def __init__(self) -> None:
         super.__init__()
@@ -86,13 +91,18 @@ class AdaptationEngine:
         #while True:
             #time.sleep(1)
             #print("time:::::"+get_am_pm())
+        selected_variant = ""
+    
         for k, value in self.mapping_dict.items():
             rm = RuntimeEngine()
-            required_val = value[1]
-            print("value[1]:::"+str(value[1]))
+            # required_val = value[1]
+            required_val = value[1].split(")")[0]
+            print("required_val:::"+str(required_val))
             print("Context Values :: : : : :: : "+str(context_values))
             for cv in context_values:
-                print("current context value + required_val "+cv+"|||||"+required_val)
+                print("current context value + + required_val ")
+                print(cv)
+                print(required_val)
                 if cv in required_val:
                     print("Selected Variant : " + str(value[len(value)-1]))
                     selected_variant = value[len(value)-1]
@@ -122,8 +132,9 @@ class RuntimeEngine:
         return
 
     def exec_print_result(self,variant):
+        print
         result = exec(variant)
-        print("From Runtime Engine"+str(result))
+        print("From Runtime Engine "+str(result))
 
 
 

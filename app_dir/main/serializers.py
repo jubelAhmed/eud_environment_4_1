@@ -7,7 +7,6 @@ class ActuatorSerializer(serializers.ModelSerializer):
         model = Actuator
         fields = ('topic', 'value', 'time', 'name')
 
-
 class SensorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sensor

@@ -25,5 +25,6 @@ def value_to_print(text):
 
 
 def print_content(what_to_print):
+    print(what_to_print)
     result = what_to_print
     return result

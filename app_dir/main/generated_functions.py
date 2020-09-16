@@ -220,10 +220,9 @@ def Send(param, param2, param3, param4, param5):
 
 
 def weather_info(city):
-    api_key = "bd27419d66c8678613e978ca561ad3f7"
+    api_key = "13acdb99f9f1e2ef361dfbd199062c04"
     url = "http://api.openweathermap.org/data/2.5/forecast?APPID={}".format(api_key) + "&q=" + city
     data = requests.get(url).json()
-    print(data)
     # data = (data['list'][0]['main']['temp'])
     data = data['list'][0]['weather'][0]['main']
     return data
@@ -265,6 +264,7 @@ def value_to_print(text):
 
 def print_content(what_to_print):
     result = what_to_print
+    print("Pring News")
     print(result)
     return result
 
@@ -347,7 +347,7 @@ def interactive_creator(param0, param1):
     requests.post(second_url, data=data2)
     return "Interactive Block Created Successfully!"
 def newspaper_headlines(param0,param1,param2):
-    data = requests.get("https://newsapi.org/v2/everything?q=" + param0 + "&from=" + param1 + "&sortBy=" + param2 + "&apiKey=0bd59e0fc1474b5caf16c806d5dffc9c").json()
+    data = requests.get("https://newsapi.org/v2/everything?q=" + param0 + "&from=" + param1 + "&sortBy=" + param2 + "&apiKey=588a1e05f1474e8d840779656ac05aaf").json()
     print(data)
     return data
 
@@ -378,6 +378,12 @@ def rajon():
     return result[1]
 
 def news(param0,param1,param2):
-    data = requests.get(" https://newsapi.org/v2/top-headlines?q=" + param0 + "&from=" + param1 + "&sortBy=" + param2 + "&apiKey=0bd59e0fc1474b5caf16c806d5dffc9c ").json()
+    data = requests.get("https://newsapi.org/v2/top-headlines?q=" + param0 + "&from=" + param1 + "&sortBy=" + param2 + "&apiKey=588a1e05f1474e8d840779656ac05aaf").json()
     print(data)
     return data
+
+def source_news(param0):
+    data = requests.get("https://newsapi.org/v2/top-headlines?sources=" + param0 + "&apiKey=588a1e05f1474e8d840779656ac05aaf").json()
+    print(data)
+    return data
+    

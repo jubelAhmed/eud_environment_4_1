@@ -261,12 +261,13 @@ def convert_expr_expression(expr):
 
 def exec_with_return(code):
     code_ast = ast.parse(code)
-
+    print(code_ast)
     init_ast = copy.deepcopy(code_ast)
     init_ast.body = code_ast.body[:-1]
 
     last_ast = copy.deepcopy(code_ast)
     last_ast.body = code_ast.body[-1:]
+    print(last_ast)
 
     exec(compile(init_ast, "<ast>", "exec"), globals())
     if type(last_ast.body[0]) == ast.Expr:
@@ -279,8 +280,10 @@ def eud_code(request):
     if request.is_ajax():
         code = request.POST['code']
         ApplicationManager.get_app(ApplicationManager, code)
-        result = exec_with_return(code)
+        print("Application Manager Work Done")
+        result = exec_with_return(code) 
+        print(result)
     else:
         return HttpResponse('Use ajax format!')
-    print(result)
+   
     return JsonResponse({'code': 'Clear'})

@@ -1,37 +1,38 @@
-
 body {
-  }
+  background-color: #fff;
+  font-family: sans-serif;
+}
 
-  .icon {
-    left: 0px;
-  }
-  
-  #navigation {
-    position: absolute;
-    width: 200px;
-    height: 300px;
-    background-color: red;
-    top: 0;
-    left: -200px;
-  }
-  .icon:hover #navigation {
-    left: 0;
-  }
-@media (min-width: 576px) { 
-
- }
-
-
-@media (min-width: 768px) { 
-
- }
-
-
-@media (min-width: 992px) { 
-    
+h1 {
+  font-weight: normal;
+  font-size: 140%;
 }
 
 
-@media (min-width: 1200px) { 
-    
- }
+.icon {
+  left: 0px;
+}
+
+#navigation {
+  position: absolute;
+  width: 200px;
+  height: 300px;
+  background-color: red;
+  top: 0;
+  left: -200px;
+}
+
+.icon:hover #navigation {
+  left: 0;
+}
+
+@media (min-width: 576px) {}
+
+
+@media (min-width: 768px) {}
+
+
+@media (min-width: 992px) {}
+
+
+@media (min-width: 1200px) {}

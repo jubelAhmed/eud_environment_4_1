@@ -6,12 +6,18 @@ import app_dir.main.generated_functions as gf
 
 app_name = "eud_environment_"
 variants = {}
+# if(variable = true)
+# if(Dhaka = Rainy)
 regex_if_true = re.compile(r"^if\strue:|^if\sTrue:$", re.MULTILINE)
 regex_if_false = re.compile(r"^if\sfalse|^if\sFalse:$", re.MULTILINE)
 regex_service = re.compile(r"(if).*?:$", re.MULTILINE)
 regex_step_only = re.compile(r".*?", re.MULTILINE)
 city_regex = "(.)(weather_info)(.)(\\'.*?\\').*?(=)(=).*?(\\'.*?\\')"
+city_new_regex = "(.)(weather_info)*('.*?')"
 
+
+# if weather_info(('Dhaka' == 'Clear')):
+#   print_content((newspaper_headlines('bitcoin','2020-6-6','PublishedAt')))
 
 class ApplicationManager:
     code = ""
@@ -55,14 +61,18 @@ class ContextManager:
     def find_context(self):
         new_lines = len(self.code.split('\n'))
         print("New lines ===>> " + str(new_lines))
-
+        
         # Split string into segments based on new line
         code_list = self.code.splitlines()
+        # ["if weather_info(('Dhaka' == 'Clear')):", "  print_content((newspaper_headlines('bitcoin','2020-6-6','PublishedAt')))"]
+        print(code_list)
         for item in code_list:
             print("Item :> " + item + " Space count ==>> " + str(item.count(' ')))
+            
         if len(code_list) > 1:
             for i in range(len(code_list)):
                 item_code = code_list[i].strip()
+                print(item_code)
                 if item_code.startswith('if'):
                     if regex_if_true.match(item_code):
                         match_str = regex_if_true.match(item_code.strip())
@@ -94,24 +104,29 @@ class ContextManager:
                     print("No match found.")
         elif len(code_list) == 1:
             print("Only One Statement")
+        print(self.context_list)
         return
 
     def watch_context(self):
+        result = ""
         for context in self.context_list:
             print("Watching ::::: "+context)
-
+            city = ""
             if 'weather' in context:
-                rg = re.compile(city_regex, re.IGNORECASE | re.DOTALL)
-                print(str(city_regex))
+                # rg = re.compile(city_regex, re.IGNORECASE | re.DOTALL)
+                # Dhaka
+                rg = re.compile(city_new_regex, re.IGNORECASE | re.DOTALL)
                 m = rg.search(context)
                 if m:
-                    city = m.group(4)[1:-1]
+                    # city = m.group(4)[1:-1]
+                    city = m.group(3)[1:-1]
                 print("City : "+city)
                 result = gf.weather_info(city)
             elif 'get_am_pm':
                 result = get_am_pm()
             context_values.insert(0, result)
-        print("Current Context :: " + result)
+        print("Current Context :: ")
+        print(result)
         return result
 
 
@@ -119,8 +134,8 @@ class VariantManager:
     code = ""
     app_id = ""
     conditional_services = []
-    services = ["print_content('variant changes')", "(newspaper_headlines('bitcoin', '2019-11-13', 'publishedAt'))"]
-
+    services = ["print_content((source_news('bbc-news')))"]
+    
     def __init__(self):
         print("in init variant manager")
 
@@ -169,6 +184,7 @@ class VariantManager:
             print(""+self.conditional_services[index])
             if length_cs==1:
                 list_of_1_0 = list(map(int, str(format(1, '01b'))))
+                # [1] 
             else:
                 list_of_1_0 = list(map(int, str(format(index, '02b'))))
             print(str(list_of_1_0))
@@ -179,8 +195,11 @@ class VariantManager:
             elif all(value == 1 for value in list_of_1_0):
                 print("ALl Values are One,, So ALl CS")
                 list_of_cs_and_s = self.services.copy()
+                j = len(list_of_cs_and_s)
                 for item in self.conditional_services:
-                    list_of_cs_and_s.insert(len(list_of_cs_and_s), item)
+                    list_of_cs_and_s.insert(j, item)
+                    j += 1;
+                
                 variants['variant' + str(index)] = list_of_cs_and_s
             else:
                 list_of_cs_and_s = self.services.copy()
