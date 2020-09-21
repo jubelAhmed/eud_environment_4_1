@@ -1,0 +1,92 @@
+{% extends 'new_base.html' %}
+
+{% load static %}
+
+{% block title %} Ambient Intelligence Lab  {% endblock title %}
+
+{% block content %}
+    <div class="container-fluid">
+          <div class="row" id="live_content_row">
+              <div class="col-sm-6" id="live_content_col">
+                 
+              </div>
+
+              <!-- <div class="col-sm-6">
+                {% for article in articles %}
+                    <div class="card mb-3">
+                        <img src="{{article.urlToImage}}" class="card-img-top" alt="news img">
+                        <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{{article.url}}" target="_blank" >{{article.title}}</a>
+                        </h5>
+                        <p class="card-text">{{article.description}}</p>
+                        <p class="card-text"><small class="text-muted">{{article.publishedAt|date:"D d M Y"}}</small></p>
+                        </div>
+                    </div>
+
+                {% endfor %}
+              </div> -->
+
+             
+          </div>         
+    </div>
+    
+<script>
+    
+    $(document).ready(function(){
+        
+            setInterval(function(){ 
+                $.ajax({
+                    type: 'GET',
+                    url: "/ajax_live_data/",
+                    
+                    success: function (response) {
+                        // if not valid user, alert the user
+                        if(response){
+                            //alert("You cannot create a friend with same nick name");
+                            if(response.context.length > 0){
+                                for(var i=0 ; i < response.context.length ; i++ ){
+                                    for(var j =0 ; j< 5;j++){
+                                        const markup = `
+                                       
+                    
+                                            <div class="card mb-3">
+                                                <img src="${ response.context[i].articles[j].urlToImage}" class="card-img-top" alt="news img">
+                                                <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <a href="${ response.context[i].articles[j].url}" target="_blank" >${ response.context[i].articles[j].title}</a>
+                                                </h5>
+                                                <p class="card-text">${ response.context[i].articles[j].description}}</p>
+                                                <p class="card-text"><small class="text-muted">${ response.context[i].articles[j].publishedAt}</small></p>
+                                                </div>
+                                            </div>
+                        
+                                       `
+    
+                                       document.getElementById("live_content_col").innerHTML = document.getElementById("live_content_col").innerHTML + markup;
+                                       
+                                    }
+                                       
+                                }
+                            }
+                            console.log(response.context)
+                            console.log(response.valid)
+                            
+                        }
+                    },
+                    error: function (response) {
+                        console.log(response)
+                    }
+                }) 
+            }, 20000);
+
+            
+            
+        
+
+    })
+
+</script> 
+
+{% endblock content %}
+

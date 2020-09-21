@@ -40,5 +40,6 @@ urlpatterns = [
     path('save_composition/',save_composition.save_com, name='save_composition'),
     path('eud_code/', views.eud_code, name='status'),
     path('actuators/', ActuatorListApiView.as_view(), name="actuator_filter"),
-
+    path('app/', views.NewApp, name="new_app"),
+    path('ajax_live_data/', views.get_live_data, name="live_data_update"),
 ]

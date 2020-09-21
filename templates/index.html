@@ -18,20 +18,25 @@
     {% include "header.html" %}
 
     <br>
-    <p class="col-md-12">
-        <button class="btn btn-primary" onclick="showCode()">Show Python</button>
-        <button class="btn btn-success" onclick="runCode()" id="runcode">Run Python</button>
-        <button class="btn btn-warning" onclick="save()" id="save">Create App</button>
-        <button class="btn btn-info" onclick="continuous()" id="continuous">Run Continuously</button>
-        <button class="btn btn-danger" onclick="stop()" id="stop">Stop Continuous Run</button>
-        <button class="btn btn-success" onclick="saveWorkspace()"  id="saveComposition">Save Composition</button>
-        <button class="btn btn-dark" onclick="restoreWorkspace()" id="restore">Restore Composition</button>
+    <div class="col-sm-12 " style="margin-bottom: 10px;">
+        <div class="row">
+            <div class="col-sm-6 text-right ">
+                        <!-- <button class="btn btn-primary" onclick="showCode()">Show Python</button> -->
+                <button class="btn btn-success " onclick="runCode()" id="runcode">Create Application</button>
+                <!-- <button class="btn btn-warning" onclick="save()" id="save">Create App</button>
+                <button class="btn btn-info" onclick="continuous()" id="continuous">Run Continuously</button>
+                <button class="btn btn-danger" onclick="stop()" id="stop">Stop Continuous Run</button>
+                <button class="btn btn-success" onclick="saveWorkspace()"  id="saveComposition">Save Composition</button>
+                <button class="btn btn-dark" onclick="restoreWorkspace()" id="restore">Restore Composition</button> -->
+                </div>
+        </div>
+       
 
         {% csrf_token %}
-    </p>
-    <div id="another" class="col-md-6 pull-right" >
-        {% include "forms.html" %}
     </div>
+    <!-- <div id="another" class="col-md-6 pull-right" >
+        {% include "forms.html" %}
+    </div> -->
     <div id="blocklyDiv" class="col-md-6 pull-left" style="height: 480px; width: 50%;">
 
     </div>
@@ -277,8 +282,8 @@
         /* include "blocks.js" */
     </script>
     <div class="col-md-6 pull-left">
-        <h1> Result</h1>
-        <pre id="json"></pre>
+        <!-- <h1> Result</h1> -->
+        <!-- <pre id="json"></pre> -->
 
         <xmp id="test" lang="xml"></xmp>
     </div>

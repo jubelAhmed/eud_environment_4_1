@@ -16,7 +16,10 @@ from django.http import HttpResponse
 from django.contrib import messages
 import logging
 from app_dir.main.application_manager import *
+import app_dir.main.adaptation_engine as adap_engine
 from django.core import serializers
+import json
+
 
 
 def register(request):
@@ -134,7 +137,7 @@ def home(request):
 
     elif request.session['username'] is not None:
         print(request.session['username'])
-        all_service = requests.get("http://127.0.0.1:8000/api/service_registry/").json()
+        all_service = requests.get("http://127.0.0.1:8081/api/service_registry/").json()
 
         if len(all_service) > 0:
             last_service = all_service[-1]
@@ -264,11 +267,9 @@ def exec_with_return(code):
     print(code_ast)
     init_ast = copy.deepcopy(code_ast)
     init_ast.body = code_ast.body[:-1]
-
     last_ast = copy.deepcopy(code_ast)
     last_ast.body = code_ast.body[-1:]
     print(last_ast)
-
     exec(compile(init_ast, "<ast>", "exec"), globals())
     if type(last_ast.body[0]) == ast.Expr:
         return eval(compile(convert_expr_expression(last_ast.body[0]), "<ast>", "eval"), globals())
@@ -279,11 +280,43 @@ def exec_with_return(code):
 def eud_code(request):
     if request.is_ajax():
         code = request.POST['code']
-        ApplicationManager.get_app(ApplicationManager, code)
+        # request.session['AppManager'] = ApplicationManager()
+        ApplicationManager.get_app(ApplicationManager,code)
         print("Application Manager Work Done")
-        result = exec_with_return(code) 
-        print(result)
+        # result = exec_with_return(code) 
+        # print(result)
     else:
         return HttpResponse('Use ajax format!')
    
     return JsonResponse({'code': 'Clear'})
+
+
+
+def NewApp(request):
+    # if request.is_ajax():
+    if(request):
+        # result = RuntimeEngine.exec_default_result(RuntimeEngine)
+        # context = result
+        context = {"Name":"Jubel Ahmed"}
+        return render(request,'live_app.html',context=context)  
+    
+
+def get_live_data(request):
+    if request:
+        print("live data list");
+        # print(request.session.get('AppManager'))
+        
+        data_found = False
+        live_data_list = ApplicationManager.get_live_data(ApplicationManager)
+        if(len(live_data_list) > 0):
+            data_found = True
+            print("live data list");
+            print(live_data_list)
+        return JsonResponse({'context': live_data_list,"status":200,"valid":True})
+        # print(result)
+   
+   
+     
+    
+   
+    

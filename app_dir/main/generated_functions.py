@@ -223,6 +223,7 @@ def weather_info(city):
     api_key = "13acdb99f9f1e2ef361dfbd199062c04"
     url = "http://api.openweathermap.org/data/2.5/forecast?APPID={}".format(api_key) + "&q=" + city
     data = requests.get(url).json()
+    print(data)
     # data = (data['list'][0]['main']['temp'])
     data = data['list'][0]['weather'][0]['main']
     return data
@@ -384,6 +385,6 @@ def news(param0,param1,param2):
 
 def source_news(param0):
     data = requests.get("https://newsapi.org/v2/top-headlines?sources=" + param0 + "&apiKey=588a1e05f1474e8d840779656ac05aaf").json()
-    print(data)
+    print("source News")
     return data
     
