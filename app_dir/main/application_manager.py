@@ -37,10 +37,11 @@ city_new_regex = "(.)(weather_info)*('.*?')"
 # print_content((newspaper_headlines('Entertainment','2020-18-9','PublishedAt')))
 
 
+
+
 class ApplicationManager:
     code = ""
     app_id = ""
-
     Live_Josn_Data = []
     
     def __init__(self):
@@ -53,7 +54,7 @@ class ApplicationManager:
         app_id = generate_id()
         ContextManager.register(ContextManager, app_id, code)
         VariantManager.register(VariantManager, app_id, code)
-        Application.register(Application, app_id, code)
+        ContextHistoryManager.register(ContextHistoryManager, app_id, code)
         AdaptationEngine.set_details(AdaptationEngine, app_id, code)
     
     def get_live_data(self):
@@ -73,7 +74,7 @@ class ContextManager:
         self.code = code
         self.app_id = app_id
         print("-------------------Context Manager------------------")
-        print("Context registered with application id :> " + app_id)
+        print("Context registered with ContextHistoryManager id :> " + app_id)
         self.find_context(self)
         print("-------------------Context Manager------------------")
         return
@@ -175,7 +176,7 @@ class ContextManager:
                     print("City : "+city)
                     result = gf.weather_info(city)  
                     current_time = datetime.now()
-                    Application.setHistory(Application,result,current_time)
+                    ContextHistoryManager.setHistory(ContextHistoryManager,result,current_time)
                     latest_result.append({"weather":result, "time":current_time})
                     context_values.insert(0,{"weather":result, "time":current_time})
             elif 'get_am_pm':
@@ -183,7 +184,7 @@ class ContextManager:
             
         print("Current Context :: ")
         print(latest_result)
-        Application.getHistory(Application)
+        ContextHistoryManager.getHistory(ContextHistoryManager)
         return latest_result
 
 
@@ -192,7 +193,8 @@ class VariantManager:
     app_id = ""
     conditional_services = []
     # services = ["print_content((source_news('bbc-news')))"]
-    general_services = ["print_content((source_news('bbc-news')))"]
+    # general_services = ["print_content((source_news('bbc-news')))"]
+    general_services = ["weather_info(city)"]
     variant_list = []
     
     def __init__(self):
@@ -202,7 +204,7 @@ class VariantManager:
         self.code = code
         self.app_id = app_id
         print("-------------------Variant Manager------------------")
-        print("Variant Registered with application id :> "+app_id)
+        print("Variant Registered with ContextHistoryManager id :> "+app_id)
         self.extract_variant(self)
         self.make_variant(self)
         print("-------------------Variant Manager------------------")
@@ -258,7 +260,7 @@ class VariantManager:
 
         if all(c == '1' for c in combination_list[len(combination_list)-1][1:]):
             list_of_cs_and_s = copy.deepcopy(self.general_services)
-            list_of_cs_and_s.append(self.conditional_services)
+            list_of_cs_and_s.extend(self.conditional_services)
             self.variant_list.append({'All':list_of_cs_and_s})
             
         for i in range(1,len(combination_list)-1):
@@ -324,34 +326,34 @@ class VariantManager:
         # AdaptationEngine.set_variants(self, variants)
         return variants
 
-class Application:
+class ContextHistoryManager:
     code = ""
     app_id = ""
     previous_weather_and_time = []    
      
     def __init__(self):
-        print("History Application")
+        print("History ContextHistoryManager")
 
     def register(self, app_id, code):
         self.code = code
         self.app_id = app_id
-        print("-------------------History Application------------------")
-        print("History Application registered with application id :> " + app_id)
+        print("-------------------History ContextHistoryManager------------------")
+        print("History ContextHistoryManager registered with ContextHistoryManager id :> " + app_id)
         
-        print("-------------------History Application------------------")
+        print("-------------------History ContextHistoryManager------------------")
         return
 
     def unregister(self):
         self.code = ""
         self.app_id = ""
         
-        print("Unregistered >> History Application")
+        print("Unregistered >> History ContextHistoryManager")
         
     def setHistory(self,weather,p_date_time):
         self.previous_weather_and_time.append({"weather":weather,"time":p_date_time})
     
     def getHistory(self):
-        print("::: Application History :::")
+        print("::: ContextHistoryManager History :::")
         for data in self.previous_weather_and_time:
             print(data)
         return self.previous_weather_and_time

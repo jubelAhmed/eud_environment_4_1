@@ -32,7 +32,7 @@
     </div>
     
 <script>
-    
+  
     $(document).ready(function(){
         
             setInterval(function(){ 
@@ -46,7 +46,8 @@
                             //alert("You cannot create a friend with same nick name");
                             if(response.context.length > 0){
                                 for(var i=0 ; i < response.context.length ; i++ ){
-                                    for(var j =0 ; j< 5;j++){
+                                    for(var j = 0 ; j< 5;j++){
+                                        
                                         const markup = `
                                        
                     
@@ -63,7 +64,7 @@
                         
                                        `
     
-                                       document.getElementById("live_content_col").innerHTML = document.getElementById("live_content_col").innerHTML + markup;
+                                       document.getElementById("live_content_col").innerHTML = document.getElementById("live_content_col").innerHTML + markup; 
                                        
                                     }
                                        
@@ -78,7 +79,7 @@
                         console.log(response)
                     }
                 }) 
-            }, 20000);
+           }, 20000);
 
             
             

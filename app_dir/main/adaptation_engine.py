@@ -198,6 +198,7 @@ class AdaptationEngine:
                     key= key+str(index)
                     true_count += 1
                     # print("key")
+                    # key = 0
                     # print(key,true_count)
     #             print("Selected Variant : " + str(value[len(value)-1]))
 #                 selected_variant = value[len(value)-1]
@@ -222,8 +223,8 @@ class AdaptationEngine:
                 r_time = cv["time"]
                 # print("r time")
                 # print(r_time)
-                # print(am.Application.previous_weather_and_time)
-                result_weather = self.calculateTime(self,time_with_type,r_time, am.Application.previous_weather_and_time)
+                # print(am.ContextHistoryManager.previous_weather_and_time)
+                result_weather = self.calculateTime(self,time_with_type,r_time, am.ContextHistoryManager.previous_weather_and_time)
                 print("result w ",result_weather)
                 context_weather = self.checkContextMatch(self,context)
                 if len(result_weather) >0 and result_weather in context_weather:
