@@ -8,41 +8,19 @@ from datetime import datetime
 
 app_name = "eud_environment_"
 variants = {}
-# if(variable = true)
-# if(Dhaka = Rainy)
+
 regex_if_true = re.compile(r"^if\strue:|^if\sTrue:$", re.MULTILINE)
 regex_if_false = re.compile(r"^if\sfalse|^if\sFalse:$", re.MULTILINE)
 regex_service = re.compile(r"(if).*?:$", re.MULTILINE)
 regex_step_only = re.compile(r".*?", re.MULTILINE)
-city_regex = "(.)(weather_info)(.)(\\'.*?\\').*?(=)(=).*?(\\'.*?\\')"
+# city_regex = "(.)(weather_info)(.)(\\'.*?\\').*?(=)(=).*?(\\'.*?\\')"
 city_new_regex = "(.)(weather_info)*('.*?')"
-
-
-# if weather_info(('Dhaka' == 'Clear')):
-#   print_content((newspaper_headlines('bitcoin','2020-6-6','PublishedAt')))
-
-# # Clouds --6:08 -- "Clouds"
-#           6:28 -- "Clouds"
-#  "if weather_info(('Dhaka' == 'Rainy')):                               
-#   print_content((newspaper_headlines('Cricket','2020-18-9','PublishedAt')))"
-# "if weather_info(('1 hour Previous Dhaka' == 'Rainy')):
-#   print_content((newspaper_headlines('Entertainment','2020-18-9','PublishedAt')))
-
-# context
-# "weather_info(('Dhaka' == 'Rainy'))"
-# "weather_info(('1 hour Previous Dhaka' == 'Rainy'))"
-
-# 
-# print_content((newspaper_headlines('Cricket','2020-18-9','PublishedAt')))
-# print_content((newspaper_headlines('Entertainment','2020-18-9','PublishedAt')))
-
-
 
 
 class ApplicationManager:
     code = ""
     app_id = ""
-    Live_Josn_Data = []
+    live_json_data = []
     
     def __init__(self):
         print("in init")
@@ -51,14 +29,20 @@ class ApplicationManager:
         if(len(code)<=0):
             return;
         code = code
-        app_id = generate_id()
+        app_id = self.generate_id(self)
         ContextManager.register(ContextManager, app_id, code)
         VariantManager.register(VariantManager, app_id, code)
         ContextHistoryManager.register(ContextHistoryManager, app_id, code)
         AdaptationEngine.set_details(AdaptationEngine, app_id, code)
     
+    def generate_id(self):
+        app_id = app_name + "" + str(random.randint(1, 100))
+        print('\napplication_id::'+app_id+"\n")
+    
+        return app_id
+
     def get_live_data(self):
-        return self.Live_Josn_Data
+        return self.live_json_data
         
         
 class ContextManager:
@@ -73,10 +57,10 @@ class ContextManager:
     def register(self, app_id, code):
         self.code = code
         self.app_id = app_id
-        print("-------------------Context Manager------------------")
-        print("Context registered with ContextHistoryManager id :> " + app_id)
+        print("-------------------Start Context Manager------------------")
+        print("\nContext registered with Application id :> " + app_id)
         self.find_context(self)
-        print("-------------------Context Manager------------------")
+        print("\n-------------------End Context Manager------------------\n")
         return
 
     def unregister(self):
@@ -97,62 +81,54 @@ class ContextManager:
             item_code = self.code.splitlines()[0]
             if regex_step_only.match(item_code):
                 match_str = regex_step_only.match(item_code.strip())
-                print('matched_str[step_only]::' + match_str.group())
+                # print('matched_str[step_only]::' + match_str.group())
                 context = match_str.group()
                 self.context_list.append(context)
             return ;
-           
         
+        print("\n\n ::: Multiple Condition List ::: ")
         print(self.conditions)   
-        # new_lines = len(self.code.split('\n'))
-        # print("New lines ===>> " + str(new_lines))
-        
-        # Split string into segments based on new line
-        
-        # ["if weather_info(('Dhaka' == 'Clear')):", "  print_content((newspaper_headlines('bitcoin','2020-6-6','PublishedAt')))"]
-      
-        # for item in code_list:
-        #     print("Item :> " + item + " Space count ==>> " + str(item.count(' ')))
+       
         for condition in self.conditions:  
             code_list = condition.splitlines()
-            print(code_list)
+            # print(code_list)
             if len(code_list) > 1:
                 for i in range(len(code_list)):
                     item_code = code_list[i].strip()
-                    print(item_code)
+                    # print(item_code)
                     if item_code.startswith('if'):
                         if regex_if_true.match(item_code):
                             match_str = regex_if_true.match(item_code.strip())
-                            print('matched_str[if_true]::' + match_str.group()[2:-1])
+                            # print('matched_str[if_true]::' + match_str.group()[2:-1])
                             context = match_str.group()[2:-1]
                             self.context_list.append(context)
-                            print('separated_service=>>>' + context)
+                            # print('separated_service=>>>' + context)
                         elif regex_if_false.match(item_code):
                             match_str = regex_if_false.match(item_code.strip())
-                            print('matched_str[if_false]::' + match_str.group()[2:-1])
+                            # print('matched_str[if_false]::' + match_str.group()[2:-1])
                             context = match_str.group()[2:-1]
                             self.context_list.append(context)
-                            print('separated_service=>>>' + context)
+                            # print('separated_service=>>>' + context)
                         elif regex_service.match(item_code):
                             match_str = regex_service.match(item_code.strip())
-                            print('matched_str[service]::' + match_str.group()[2:-1])
+                            # print('matched_str[service]::' + match_str.group()[2:-1])
                             context = match_str.group()[2:-1]
                             self.context_list.append(context)
-                            print('separated_service=>>>' + context)
-                        # elif regex_step_only.match(item_code):
-                        #     match_str = regex_step_only.match(item_code.strip())
-                        #     print('matched_str[step_only]::' + match_str.group())
-                        #     context = match_str.group()[2:-1]
-                        #     self.context_list.append(context)
-                        #     print('separated_service=>>>' + context)
+                            
+                                
+                                
+                            # print('separated_service=>>>' + context)
                         else:
-                            print("Does not match")
+                            # print("Does not match")
+                            pass
                     else:
-                        print("No match found.")
+                        # print("No match found.")
+                        pass
+                    
             elif len(code_list) == 1:
-                print("Only One Statement")
+                print("Only One Statement Here")
         
-        print("::: Context List :::")       
+        print("\n\n::: Context List :::")       
         print(self.context_list)
         return
 
@@ -162,12 +138,9 @@ class ContextManager:
             print("Watching ::::: "+context)
             city = ""
             if 'weather' in context:
-                # rg = re.compile(city_regex, re.IGNORECASE | re.DOTALL)
-                # Dhaka
                 rg = re.compile(city_new_regex, re.IGNORECASE | re.DOTALL)
                 m = rg.search(context)
                 if m:
-                    # city = m.group(4)[1:-1]
                     city = m.group(3)[1:-1]
                 
                 if(city.find("previous")>-1):
@@ -182,7 +155,7 @@ class ContextManager:
             elif 'get_am_pm':
                 result = get_am_pm()
             
-        print("Current Context :: ")
+        print("\n\n ::: Current Context ::: ")
         print(latest_result)
         ContextHistoryManager.getHistory(ContextHistoryManager)
         return latest_result
@@ -194,20 +167,23 @@ class VariantManager:
     conditional_services = []
     # services = ["print_content((source_news('bbc-news')))"]
     # general_services = ["print_content((source_news('bbc-news')))"]
-    general_services = ["weather_info(city)"]
+    # general_services = ["weather_info('Dhaka')"]
+    general_services = []
+    
     variant_list = []
     
     def __init__(self):
-        print("in init variant manager")
+        # print("in init variant manager")
+        pass
 
     def register(self, app_id, code):
         self.code = code
         self.app_id = app_id
-        print("-------------------Variant Manager------------------")
-        print("Variant Registered with ContextHistoryManager id :> "+app_id)
+        print("-------------------Start Variant Manager------------------\n")
+        print("\nVariant Registered with Application id :> "+app_id)
         self.extract_variant(self)
         self.make_variant(self)
-        print("-------------------Variant Manager------------------")
+        print("\n-------------------End Variant Manager------------------\n")
         return
 
     def unregister(self):
@@ -217,28 +193,47 @@ class VariantManager:
         self.conditional_services = []
         self.variants = {}
         print("Unregistered >> Variant Manager")
+        
+    def make_city_weather(self):
+        
+        for context in ContextManager.context_list:
+            print("Watching ::::: "+context)
+            city = ""
+            if 'weather' in context:
+                rg = re.compile(city_new_regex, re.IGNORECASE | re.DOTALL)
+                m = rg.search(context)
+                if m:
+                    city = m.group(3)[1:-1]
+                if(city.find("previous") <= -1):
+                    weather_services = "print_content((Latest_weather_info('{0}')))".format(city)
+                    print(weather_services)
+                    self.general_services.append(weather_services)
+                    break
 
     def extract_variant(self):
-        # Split string into segments based on new line
-        print(ContextManager.conditions)
+       
+        # print(ContextManager.conditions)
+        self.make_city_weather(self)
+        
         for cd in ContextManager.conditions:
             print(cd)   
             code_list = cd.splitlines()
-            # for item in code_list:
-            #     print("Item :> " + item + " Space count ==>> " + str(item.count(' ')))
+
             if len(code_list) > 1:
                 for i in range(len(code_list)):
                     if code_list[i].strip().startswith('if'):
                         item_code = code_list[i+1].strip()
-                        print('matched_str[step_only]::' + item_code)
+                        # print('matched_str[step_only]::' + item_code)
                         conditional = item_code
                         self.conditional_services.append(conditional)
-                        print('separated_service=>>>' + conditional)
+                        # print('separated_service=>>>' + conditional)
                     else:
-                        print("No match found.")
+                        # print("No match found.")
+                        pass
+                    
             elif len(code_list) == 1:
                 print("Only One Statement")
-        print("CS ")
+        print("\n ::: Variant List :: ")
         print(self.conditional_services)
         return
     
@@ -253,6 +248,8 @@ class VariantManager:
             b = f'{position:0{bit_count}b}'
             combination_list.append(b)
 
+        print("\n::: Binary Combination List :::")
+        print(combination_list)
        
         if all(c == '0' for c in combination_list[0][1:]):
             if len(self.general_services) > 0:
@@ -282,7 +279,84 @@ class VariantManager:
         
         self.get_variant(self)
         
-    # def make_variant(self):
+
+    def get_variant(self):
+        print("\n::: Variant Maping List :::")
+        for variant in self.variant_list:
+            print(variant)
+        # AdaptationEngine.set_variants(self, variants)
+        return variants
+
+class ContextHistoryManager:
+    code = ""
+    app_id = ""
+    previous_weather_and_time = []    
+     
+    def __init__(self):
+        # print("History ContextHistoryManager")
+        pass
+
+    def register(self, app_id, code):
+        self.code = code
+        self.app_id = app_id
+        return
+
+    def unregister(self):
+        self.code = ""
+        self.app_id = ""
+        
+        print("Unregistered >>  Context History Manager")
+        
+    def setHistory(self,weather,p_date_time):
+        self.previous_weather_and_time.append({"weather":weather,"time":p_date_time})
+    
+    def getHistory(self):
+        print("\n\n::: Context History :::")
+        for data in self.previous_weather_and_time:
+            print(data)
+        return self.previous_weather_and_time
+
+
+
+
+def decimal_to_binary(num):
+    if num > 1:
+        decimal_to_binary(num // 2)
+    return num % 2
+
+
+ # new_lines = len(self.code.split('\n'))
+# print("New lines ===>> " + str(new_lines))
+
+# Split string into segments based on new line
+
+# ["if weather_info(('Dhaka' == 'Clear')):", "  print_content((newspaper_headlines('bitcoin','2020-6-6','PublishedAt')))"]
+
+# for item in code_list:
+#     print("Item :> " + item + " Space count ==>> " + str(item.count(' ')))
+
+##### For Testting Result  ######
+
+# if weather_info(('Dhaka' == 'Clear')):
+#   print_content((newspaper_headlines('bitcoin','2020-6-6','PublishedAt')))
+
+# # Clouds --6:08 -- "Clouds"
+#           6:28 -- "Clouds"
+#  "if weather_info(('Dhaka' == 'Rainy')):                               
+#   print_content((newspaper_headlines('Cricket','2020-18-9','PublishedAt')))"
+# "if weather_info(('1 hour Previous Dhaka' == 'Rainy')):
+#   print_content((newspaper_headlines('Entertainment','2020-18-9','PublishedAt')))
+
+# context
+# "weather_info(('Dhaka' == 'Rainy'))"
+# "weather_info(('1 hour Previous Dhaka' == 'Rainy'))"
+
+# 
+# print_content((newspaper_headlines('Cricket','2020-18-9','PublishedAt')))
+# print_content((newspaper_headlines('Entertainment','2020-18-9','PublishedAt')))
+
+
+# def old_make_variant(self):
     #     length_cs = len(self.conditional_services)
     #     print("Length of CS :::: "+str(length_cs))
 
@@ -318,54 +392,3 @@ class VariantManager:
 
     #     self.get_variant(self)
     #     return
-
-    def get_variant(self):
-        print("::: Variant Maping List :::")
-        for variant in self.variant_list:
-            print(variant)
-        # AdaptationEngine.set_variants(self, variants)
-        return variants
-
-class ContextHistoryManager:
-    code = ""
-    app_id = ""
-    previous_weather_and_time = []    
-     
-    def __init__(self):
-        print("History ContextHistoryManager")
-
-    def register(self, app_id, code):
-        self.code = code
-        self.app_id = app_id
-        print("-------------------History ContextHistoryManager------------------")
-        print("History ContextHistoryManager registered with ContextHistoryManager id :> " + app_id)
-        
-        print("-------------------History ContextHistoryManager------------------")
-        return
-
-    def unregister(self):
-        self.code = ""
-        self.app_id = ""
-        
-        print("Unregistered >> History ContextHistoryManager")
-        
-    def setHistory(self,weather,p_date_time):
-        self.previous_weather_and_time.append({"weather":weather,"time":p_date_time})
-    
-    def getHistory(self):
-        print("::: ContextHistoryManager History :::")
-        for data in self.previous_weather_and_time:
-            print(data)
-        return self.previous_weather_and_time
-
-
-def generate_id():
-    app_id = app_name + "" + str(random.randint(1, 100))
-    print('application_id::'+app_id)
-    return app_id
-
-
-def decimal_to_binary(num):
-    if num > 1:
-        decimal_to_binary(num // 2)
-    return num % 2

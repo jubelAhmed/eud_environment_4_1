@@ -2,6 +2,8 @@ import time
 import random
 import re
 
+import json
+
 # cd = ["if  weather_info(('Dhaka' == 'Rainy')):\n  print_content((newspaper_headlines('Footbal','2020-9-19','PublishedAt')))", "if  weather_info(('1 hour previous Dhaka' == 'Rainy')):\n  print_content((newspaper_headlines('Entertainment','2020-9-19','PublishedAt')))", "if  weather_info(('1 hour previous Dhaka' == 'Rainy')):\n  print_content((newspaper_headlines('Entertainment','2020-9-19','PublishedAt')))"]
 
 # common_service = ["print_content((source_news('bbc-news')))"]
@@ -62,27 +64,27 @@ import re
 
 #  #######   minute diff
 
-import time
-from datetime import datetime
-now = datetime.now()
-current_time = now.strftime("%H:%M:%S")
-print(current_time)
-# time.sleep(20)
-now2 = datetime.now()
-current_time2 = now2.strftime("%H:%M:%S")
-print(current_time2)
+# import time
+# from datetime import datetime
+# now = datetime.now()
+# current_time = now.strftime("%H:%M:%S")
+# print(current_time)
+# # time.sleep(20)
+# now2 = datetime.now()
+# current_time2 = now2.strftime("%H:%M:%S")
+# print(current_time2)
 
-minutes_diff = (now2 - now).total_seconds();
+# minutes_diff = (now2 - now).total_seconds();
 
-from math import isclose
-a = 1.0
-b = 1.00000001
-k= isclose(a, b, abs_tol=1e-8)
+# from math import isclose
+# a = 1.0
+# b = 1.00000001
+# k= isclose(a, b, abs_tol=1e-8)
 
-print(k)
+# print(k)
 
 
-print(minutes_diff)
+# print(minutes_diff)
 
 city_prev = "  1   hour   previous          dhaka"
 
@@ -146,19 +148,69 @@ c = ["  weather_info(('Dhaka' == 'Rainy'))", "  weather_info(('1 hour previous D
 
 # print(d["weather"])
 
-arr = []
+# arr = []
 
-for j in range(5):
+# for j in range(5):
    
-    a = []
-    for i in range(10):
-        a.append(i*i)
+#     a = []
+#     for i in range(10):
+#         a.append(i*i)
 
-    arr = a
-    print(arr)
+#     arr = a
+#     print(arr)
 
+json_data = """ {
+    "status":"ok",
+    "totalResults":4173,
+    "articles":[
+       {
+          "source":{
+             "id":"None",
+             "name":"Business Wire"
+          },
+          "author":"None",
+          "title":"SCE Resolves All Insurance Subrogation Claims for the Thomas, Koenigstein Fires and Montecito Mudslides",
+          "description":"ROSEMEAD, Calif.--(BUSINESS WIRE)--Southern California Edison has reached a settlement agreement with all the holders of insurance subrogation claims in the pending litigation arising from the 2017 Thomas and Koenigstein fires and the 2018 Montecito Mudslides…",
+          "url":"https://www.businesswire.com/news/home/20200923005904/en/SCE-Resolves-All-Insurance-Subrogation-Claims-for-the-Thomas-Koenigstein-Fires-and-Montecito-Mudslides",
+          "urlToImage":"http://www.businesswire.com/images/bwlogo_square.png",
+          "publishedAt":"2020-09-23T20:24:22Z",
+          "content":"ROSEMEAD, Calif.--(BUSINESS WIRE)--Southern California Edison has reached a settlement agreement with all the holders of insurance subrogation claims in the pending litigation arising from the 2017 T… [+9737 chars]"
+       }
+       
+    ]
+ }"""
+ 
 
+# import requests
 
+# response = requests.get("https://jsonplaceholder.typicode.com/todos")
+# todos = response.json()
+
+# todos.append({"ServiceNmae":"Weather"})
+
+# print(todos)
+
+# k = "print_content((Latest_weather_info('city')))"
+# import re
+
+# s = 'aaa@xxx.com bbb@yyy.com ccc@zzz.com'
+# d = "Dhaka"
+# print(re.sub("city", d, k))
+
+# weather_services = "print_content((Latest_weather_info('{0}')))".format(d)
+# print(weather_services)
+
+import requests
+
+import webbrowser
+
+url = 'https://pythonexamples.org'
+webbrowser.register('chrome',
+	None,
+	webbrowser.BackgroundBrowser("C://Program Files (x86)//Google//Chrome//Application//chrome.exe"))
+webbrowser.get('chrome').open_new(url)
+
+# ABC@xxx.com ABC@yyy.com ABC@zzz.com
 
     
        

@@ -303,17 +303,19 @@ def NewApp(request):
 
 def get_live_data(request):
     if request:
-        print("live data list");
+       
         # print(request.session.get('AppManager'))
         
         data_found = False
         live_data_list = ApplicationManager.get_live_data(ApplicationManager)
         if(len(live_data_list) > 0):
             data_found = True
-            print("live data list");
-            print(live_data_list)
+
         return JsonResponse({'context': live_data_list,"status":200,"valid":True})
+    
         # print(result)
+        
+# [0].ServiceNmae
    
    
      
