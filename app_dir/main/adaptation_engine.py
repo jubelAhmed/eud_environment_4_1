@@ -74,7 +74,7 @@ class AdaptationEngine:
         print("\n-----------------Start Adaptation Engine-------------\n")
         # self.mapper(self)
         get_context()
-        self.get_selected_variant(self) # test
+        # self.get_selected_variant(self) # test
         # RuntimeEngine.get_and_set_code(RuntimeEngine, self.get_selected_variant(self))
         print("\n-----------------End Adaptation Engine-------------\n")
         return

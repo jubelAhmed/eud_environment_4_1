@@ -2,38 +2,99 @@
 
 {% load static %}
 
-{% block title %} Ambient Intelligence Lab  {% endblock title %}
+{% block title %} Ambient Intelligence Lab {% endblock title %}
 
 {% block content %}
-    <div class="container-fluid">
-        <div class="jumbotron">
-          <div class="row" id="live_content_row">
- 
-           
-          </div>
+<div class="">
+    <div class="" >
+
+        <div class="p-5 bg-success" style="border:none;">
+
+            <div class="d-flex justify-content-center">
+
+                <div id="current-weather">
+                    
+                
+                </div>
+
+
+            </div>
+
+
+        </div>
+
         
-        </div>         
+        <div class="pl-5 pr-5">
+
+            <div class="row" id="live_content_row">
+
+           
+           </div>
+            
+
+        </div>
+
+        
+
     </div>
-    
+</div>
+
 <script>
-  
-    $(document).ready(function(){
+    $(document).ready(function () {
 
         get_live_data();
 
-        function createRow(context){
-        
-          var row_maintain = ""
-          for(var i=1 ; i < context.length ; i++ ){
-                col_start = ` <div class="col-sm-4" > `
-                title = `<center><h4 class="text-info">${context[i].ServiceName}</h4></center> `
-                col_start  = col_start + title;
+        function drawWeather(d) {
+            console.log(d)
+            var celcius = Math.round(parseFloat(d.list[0].main.temp) - 273.15);
+            var fahrenheit = Math.round(((parseFloat(d.list[0].main.temp) - 273.15) * 1.8) + 32);
 
-                for(var j = 0 ; j< 5;j++){
+            description = String(d.list[0].weather[0].description).toUpperCase();
+
+            var c_weather = `
+            <div class="card weather-info bg-white" id="weather-info" style="max-width: 500px;">
+                <div class="row no-gutters justify-content-center">
+                    <div class="col-sm-4">
+                        <img src="{% static 'images/rainy.png'%}" class="card-img" alt="rainy">
+                    </div>
+
+                   
+                    <div class="col-sm-8">
+                        <div class="card-body text-center">
+                            <h2 class="card-title text-danger">${description}</h5>
+                               
+                            <h3 class="card-text text-success">${celcius + '&deg;'}</p>
+                            
+                            <h4 class="card-text text-info"> <i class="fa fa-map-marker pr-2" aria-hidden="true"></i></i>${d.city.name}</h4>
+                        </div>
+                    </div>
+                    
+                </div>                   
+            </div>
+            `
+
+            document.getElementById('current-weather').innerHTML = c_weather;
+
+            /*document.getElementById('description').innerHTML = d.list[0].weather[0].description;
+            document.getElementById('temp').innerHTML = celcius + '&deg;';
+            document.getElementById('location').innerHTML = d.city.name;*/
+           
+
+        }
+
+        function createRow(context) {
+
+            var row_maintain = ""
+            for (var i = 1; i < context.length; i++) {
+                col_start = ` <div class="col-sm-4" > `
+                title = `<div class="bg-danger mt-2 p-2"><center><h4 class="text-white">${String(context[i].ServiceName).toUpperCase()}</h4></center> </div>`
+                col_start = col_start + title;
+
+                for (var j = 0; j < 5; j++) {
                     const markup = `
                                             
                         <div class="card mb-3">
-                            <img src="${ context[i].articles[j].urlToImage}" class="card-img-top" alt="news img">
+                            <img src="${ context[i].articles[j].urlToImage}" class="card-img-top" alt="news img" style="height:150px">
                             <div class="card-body">
                             <h5 class="card-title">
                                 <a href="${ context[i].articles[j].url}" target="_blank" >${ context[i].articles[j].title}</a>
@@ -48,48 +109,41 @@
 
                 }
 
-                col_start = col_start+"</div>"
+                col_start = col_start + "</div>"
 
                 row_maintain = row_maintain + col_start;
 
-                
-          }
-          
+            }
 
-          document.getElementById("live_content_row").innerHTML = row_maintain
-
-         
+            document.getElementById("live_content_row").innerHTML = row_maintain
 
         }
 
-        function get_live_data(){
+        function get_live_data() {
             $.ajax({
                 type: 'GET',
                 url: "/ajax_live_data/",
-                
+
                 success: function (response) {
                     // if not valid user, alert the user
-                    if(response.valid){
-                        console.log(response.context)
-                        //alert("You cannot create a friend with same nick name");
+                    if (response.valid) {
+                        drawWeather(response.context[0])
                         createRow(response.context)
-                        
+
                     }
                 },
                 error: function (response) {
                     console.log(response)
                 }
-            }) 
+            })
         }
-        
+
         setInterval(function(){ 
-            get_live_data();
-        }, 10000);
-   
+             get_live_data();
+         }, 10000); 
 
-    }) 
 
-</script> 
+    })
+</script>
 
 {% endblock content %}
-
