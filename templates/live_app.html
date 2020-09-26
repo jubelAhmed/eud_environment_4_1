@@ -99,6 +99,8 @@
                 document.getElementById('current-weather').innerHTML = c_weather;
             }else if(String(d.list[0].weather[0].description).toUpperCase().includes("SUNNY")){
                 document.getElementById('current-weather').innerHTML = sunny_weather;
+            }else{
+                document.getElementById('current-weather').innerHTML = c_weather;
             }
 
            
