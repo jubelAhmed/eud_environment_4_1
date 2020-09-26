@@ -73,7 +73,35 @@
             </div>
             `
 
-            document.getElementById('current-weather').innerHTML = c_weather;
+            var sunny_weather = `
+            <div class="card weather-info bg-white" id="weather-info" style="max-width: 500px;">
+                <div class="row no-gutters justify-content-center">
+                    <div class="col-sm-4">
+                        <img src="{% static 'images/sunny.png'%}" class="card-img" alt="rainy">
+                    </div>
+
+                   
+                    <div class="col-sm-8">
+                        <div class="card-body text-center">
+                            <h2 class="card-title text-danger">${description}</h5>
+                               
+                            <h3 class="card-text text-success">${celcius + '&deg;'}</p>
+                            
+                            <h4 class="card-text text-info"> <i class="fa fa-map-marker pr-2" aria-hidden="true"></i></i>${d.city.name}</h4>
+                        </div>
+                    </div>
+                    
+                </div>                   
+            </div>
+            `
+
+            if(String(d.list[0].weather[0].description).toUpperCase().includes("RAIN")){
+                document.getElementById('current-weather').innerHTML = c_weather;
+            }else if(String(d.list[0].weather[0].description).toUpperCase().includes("SUNNY")){
+                document.getElementById('current-weather').innerHTML = sunny_weather;
+            }
+
+           
 
             /*document.getElementById('description').innerHTML = d.list[0].weather[0].description;
             document.getElementById('temp').innerHTML = celcius + '&deg;';
